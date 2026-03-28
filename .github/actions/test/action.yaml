@@ -1,0 +1,27 @@
+name: test
+
+inputs:
+  env:
+    description: Test environment name
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/checkout@v6
+      with:
+        repository: mtararujs/course-js-api-framework
+        path: ./test
+    - run: echo "Running tests on ${{ inputs.env }}..."
+      
+    - name: Install npm dependencies
+      shell: cmd
+      run: npm install
+
+    - name: Run greetings tests
+      shell: cmd
+      run: npm run greetings greetings_${{ inputs.env }}
+
+    - name: Finish test stage
+      shell: cmd
+      run: echo "Testing on ${{ inputs.env }} environment finished successfully."

@@ -1,0 +1,30 @@
+name: deploy
+
+inputs:
+  env:
+    required: true
+  port:
+    description: Application port
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: checkout python-greetings repository
+      uses: actions/checkout@v6
+      with:
+        repository: mtararujs/python-greetings
+        ref: main
+      run: echo "Running tests on ${{ inputs.env }}..."
+
+    - name: Delete existing pm2 process
+      shell: cmd
+      run: pm2 delete greetings-app-${{ inputs.env }} || exit /b 0
+
+    - name: Start new pm2 process
+      shell: cmd
+      run: pm2 start app.py --name greetings-app-${{ inputs.env }} --interpreter %CD%\venv\Scripts\python.exe -- --port ${{ inputs.port }}
+
+    - name: Finish stage
+      shell: cmd
+      run: echo "Deployment to ${{ inputs.env }} environment finished successfully."

@@ -1,0 +1,114 @@
+name: python-greetings
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  install-pip-deps:
+    name: install-pip-deps
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v6
+      - name: Print info
+        run: echo "Installing python dependencies..."
+      - name: Checkout python-greetings repository
+        uses: actions/checkout@v6
+        with:
+          repository: mtararujs/python-greetings
+      - name: Create virtual environment
+        shell: cmd
+        run: python -m venv venv
+      - name: Install required libraries
+        shell: cmd
+        run: venv\Scripts\python -m pip install -r requirements.txt
+      - name: Finish install stage
+        shell: cmd
+        run: echo Dependencies installed.
+
+  deploy-to-dev:
+    name: deploy-to-dev
+    runs-on: self-hosted
+    needs: install-pip-deps
+    steps:
+      - name: Deploy to dev
+        uses: ./.github/actions/deploy
+        with:
+          env: dev
+          port: "7001"
+
+  tests-on-dev:
+    name: tests-on-dev
+    runs-on: self-hosted
+    needs: deploy-to-dev
+    steps:
+      - name: Run tests on dev
+        uses: ./.github/actions/test
+        with:
+          env: dev
+
+  deploy-to-stg:
+    name: deploy-to-stg
+    runs-on: self-hosted
+    needs: install-pip-deps
+    steps:
+      - name: Deploy to stg
+        uses: ./.github/actions/deploy
+        with:
+          env: stg
+          port: "7002"
+
+  tests-on-stg:
+    name: tests-on-stg
+    runs-on: self-hosted
+    needs: deploy-to-stg
+    steps:
+      - name: Run tests on stg
+        uses: ./.github/actions/test
+        with:
+          env: stg
+
+  deploy-to-preprod:
+    name: deploy-to-preprod
+    runs-on: self-hosted
+    needs: install-pip-deps
+    steps:
+      - name: Deploy to preprod
+        uses: ./.github/actions/deploy
+        with:
+          env: preprod
+          port: "7003"
+
+  tests-on-preprod:
+    name: tests-on-preprod
+    runs-on: self-hosted
+    needs: deploy-to-preprod
+    steps:
+      - name: Run tests on preprod
+        uses: ./.github/actions/test
+        with:
+          env: preprod
+
+  deploy-to-prod:
+    name: deploy-to-prod
+    runs-on: self-hosted
+    needs: tests-on-preprod
+    steps:
+      - name: Deploy to prod
+        uses: ./.github/actions/deploy
+        with:
+          env-name: prod
+          port: "7004"
+
+  tests-on-prod:
+    name: tests-on-prod
+    runs-on: self-hosted
+    needs: deploy-to-prod
+    steps:
+      - name: Run tests on prod
+        uses: ./.github/actions/test
+        with:
+          env: prod
+
