@@ -34,6 +34,7 @@ jobs:
     needs: install-pip-deps
     steps:
       - uses: actions/checkout@v6
+        clean: false
       - name: Deploy to dev
         uses: ./.github/actions/deploy
         with:
@@ -46,6 +47,7 @@ jobs:
     needs: deploy-to-dev
     steps:
       - uses: actions/checkout@v6
+        clean: false
       - name: Run tests on dev
         uses: ./.github/actions/test
         with:
@@ -57,6 +59,7 @@ jobs:
     needs: tests-on-dev
     steps:
       - uses: actions/checkout@v6
+        clean: false
       - name: Deploy to stg
         uses: ./.github/actions/deploy
         with:
@@ -69,6 +72,7 @@ jobs:
     needs: deploy-to-stg
     steps:
       - uses: actions/checkout@v6
+        clean: false
       - name: Run tests on stg
         uses: ./.github/actions/test
         with:
@@ -80,6 +84,7 @@ jobs:
     needs: tests-on-stg
     steps:
       - uses: actions/checkout@v6
+        clean: false
       - name: Deploy to preprod
         uses: ./.github/actions/deploy
         with:
@@ -92,6 +97,7 @@ jobs:
     needs: deploy-to-preprod
     steps:
       - uses: actions/checkout@v6
+        clean: false
       - name: Run tests on preprod
         uses: ./.github/actions/test
         with:
@@ -103,6 +109,7 @@ jobs:
     needs: tests-on-preprod
     steps:
       - uses: actions/checkout@v6
+        clean: false
       - name: Deploy to prod
         uses: ./.github/actions/deploy
         with:
@@ -115,6 +122,7 @@ jobs:
     needs: deploy-to-prod
     steps:
       - uses: actions/checkout@v6
+        clean: false
       - name: Run tests on prod
         uses: ./.github/actions/test
         with:
