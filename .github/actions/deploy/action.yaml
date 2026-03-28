@@ -15,7 +15,7 @@ runs:
       with:
         repository: mtararujs/python-greetings
         ref: main
-      run: echo "Running tests on ${{ inputs.env }}..."
+    - run: echo "Running tests on ${{ inputs.env }}..."
 
     - name: Delete existing pm2 process
       shell: cmd
