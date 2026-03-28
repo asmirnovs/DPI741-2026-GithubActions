@@ -15,6 +15,7 @@ runs:
       with:
         repository: mtararujs/python-greetings
         ref: main
+        clean: false
     - run: echo "Running tests on ${{ inputs.env }}..."
       shell: cmd
 

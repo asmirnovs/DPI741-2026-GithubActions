@@ -12,6 +12,7 @@ runs:
       with:
         repository: mtararujs/course-js-api-framework
         path: ./test
+        clean: false
     - run: echo "Running tests on ${{ inputs.env }}..."
       shell: cmd
       
