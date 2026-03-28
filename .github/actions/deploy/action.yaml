@@ -15,22 +15,27 @@ runs:
       with:
         repository: mtararujs/python-greetings
         ref: main
-        clean: false
+        clean: 'false'
+        path: 'deploy'
     - run: echo "Running tests on ${{ inputs.env }}..."
       shell: cmd
 
     - name: Delete existing pm2 process
       shell: cmd
+      working-directory: ./deploy
       run: pm2 delete greetings-app-${{ inputs.env }} || exit /b 0
 
     - name: pwd
       shell: cmd
+      working-directory: ./deploy
       run: dir
 
     - name: Start new pm2 process
       shell: cmd
+      working-directory: ./deploy
       run: pm2 start app.py --name greetings-app-${{ inputs.env }} --interpreter %CD%\venv\Scripts\python.exe -- --port ${{ inputs.port }}
 
     - name: Finish stage
       shell: cmd
+      working-directory: ./deploy
       run: echo "Deployment to ${{ inputs.env }} environment finished successfully."

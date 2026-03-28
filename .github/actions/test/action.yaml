@@ -12,18 +12,22 @@ runs:
       with:
         repository: mtararujs/course-js-api-framework
         path: ./test
-        clean: false
+        clean: 'false'
+        path: 'test'
     - run: echo "Running tests on ${{ inputs.env }}..."
       shell: cmd
       
     - name: Install npm dependencies
       shell: cmd
+      working-directory: ./test
       run: npm install
 
     - name: Run greetings tests
       shell: cmd
+      working-directory: ./test
       run: npm run greetings greetings_${{ inputs.env }}
 
     - name: Finish test stage
       shell: cmd
+      working-directory: ./test
       run: echo "Testing on ${{ inputs.env }} environment finished successfully."
