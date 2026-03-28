@@ -32,7 +32,7 @@ runs:
 
     - name: Start new pm2 process
       shell: cmd
-      run: pm2 start %CD%\deploy\app.py --name greetings-app-${{ inputs.env }} --interpreter %CD%\venv\Scripts\python.exe -- --port ${{ inputs.port }}
+      run: pm2 start %CD%\deploy\app.py --name greetings-app-${{ inputs.env }} --interpreter %CD%\python\venv\Scripts\python.exe -- --port ${{ inputs.port }}
 
     - name: Finish stage
       shell: cmd
