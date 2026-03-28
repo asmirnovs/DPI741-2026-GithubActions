@@ -22,6 +22,10 @@ runs:
       shell: cmd
       run: pm2 delete greetings-app-${{ inputs.env }} || exit /b 0
 
+    - name: pwd
+      shell: cmd
+      run: dir
+
     - name: Start new pm2 process
       shell: cmd
       run: pm2 start app.py --name greetings-app-${{ inputs.env }} --interpreter %CD%\venv\Scripts\python.exe -- --port ${{ inputs.port }}
