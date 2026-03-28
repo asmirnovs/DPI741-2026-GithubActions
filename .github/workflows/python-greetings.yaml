@@ -32,6 +32,7 @@ jobs:
     name: deploy-to-dev
     runs-on: self-hosted
     needs: install-pip-deps
+    uses: actions/checkout@v6
     steps:
       - name: Deploy to dev
         uses: ./.github/actions/deploy
@@ -43,6 +44,7 @@ jobs:
     name: tests-on-dev
     runs-on: self-hosted
     needs: deploy-to-dev
+    uses: actions/checkout@v6
     steps:
       - name: Run tests on dev
         uses: ./.github/actions/test
@@ -52,7 +54,8 @@ jobs:
   deploy-to-stg:
     name: deploy-to-stg
     runs-on: self-hosted
-    needs: install-pip-deps
+    needs: tests-on-dev
+    uses: actions/checkout@v6
     steps:
       - name: Deploy to stg
         uses: ./.github/actions/deploy
@@ -64,6 +67,7 @@ jobs:
     name: tests-on-stg
     runs-on: self-hosted
     needs: deploy-to-stg
+    uses: actions/checkout@v6
     steps:
       - name: Run tests on stg
         uses: ./.github/actions/test
@@ -73,7 +77,8 @@ jobs:
   deploy-to-preprod:
     name: deploy-to-preprod
     runs-on: self-hosted
-    needs: install-pip-deps
+    needs: tests-on-stg
+    uses: actions/checkout@v6
     steps:
       - name: Deploy to preprod
         uses: ./.github/actions/deploy
@@ -85,6 +90,7 @@ jobs:
     name: tests-on-preprod
     runs-on: self-hosted
     needs: deploy-to-preprod
+    uses: actions/checkout@v6
     steps:
       - name: Run tests on preprod
         uses: ./.github/actions/test
@@ -95,6 +101,7 @@ jobs:
     name: deploy-to-prod
     runs-on: self-hosted
     needs: tests-on-preprod
+    uses: actions/checkout@v6
     steps:
       - name: Deploy to prod
         uses: ./.github/actions/deploy
@@ -106,6 +113,7 @@ jobs:
     name: tests-on-prod
     runs-on: self-hosted
     needs: deploy-to-prod
+    uses: actions/checkout@v6
     steps:
       - name: Run tests on prod
         uses: ./.github/actions/test
