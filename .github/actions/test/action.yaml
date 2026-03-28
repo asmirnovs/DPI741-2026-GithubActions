@@ -13,6 +13,7 @@ runs:
         repository: mtararujs/course-js-api-framework
         path: ./test
     - run: echo "Running tests on ${{ inputs.env }}..."
+      shell: cmd
       
     - name: Install npm dependencies
       shell: cmd
